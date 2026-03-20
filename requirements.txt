@@ -6,7 +6,7 @@ numpy
 PyPDF2
 pdf2image
 pytesseract
-Pillow
+Pillow>=9.5.0,<10
 
 google-generativeai
 
