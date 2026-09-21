@@ -1,80 +1,68 @@
 import io
 import csv
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-from .analysis import learning_timeline
-
+from fpdf import FPDF
 
 def create_csv_report(resume_text, job_desc, matched, missing, score, ats_score, ai_feedback):
     output = io.StringIO()
     writer = csv.writer(output)
-
-    writer.writerow(["Placement Readiness Analyzer Report"])
+    
+    writer.writerow(["Placement Readiness Report"])
+    writer.writerow(["Overall Score", f"{score}%"])
+    writer.writerow(["ATS Match", f"{ats_score}%"])
     writer.writerow([])
-    writer.writerow(["Metric", "Value"])
-    writer.writerow(["Readiness Score", f"{score}%"])
-    writer.writerow(["ATS Score", f"{ats_score}%"])
+    
     writer.writerow(["Matched Skills", ", ".join(matched)])
     writer.writerow(["Missing Skills", ", ".join(missing)])
     writer.writerow([])
-    writer.writerow(["Personalized Learning Timeline"])
+    
+    writer.writerow(["Learning Timeline"])
+    writer.writerow(["Phase", "Skills to Focus On"])
+    
+    # Needs to match analysis.py format
+    from placement.analysis import learning_timeline
     timeline = learning_timeline(missing)
-    for week, (skill, reason) in timeline.items():
-        writer.writerow([week, f"{skill} - {reason}"])
+    for phase, skills_list in timeline.items():
+        # clean the skills list for CSV
+        clean_skills = skills_list.replace('✅ ', '').replace('\n', ' | ').replace('**', '')
+        writer.writerow([phase, clean_skills])
+        
     writer.writerow([])
     writer.writerow(["AI Feedback"])
-    writer.writerow([ai_feedback or ""])
-
-    return output.getvalue().encode("utf-8")
+    writer.writerow([ai_feedback])
+    
+    return output.getvalue().encode('utf-8')
 
 
 def create_pdf_report(resume_text, job_desc, matched, missing, score, ats_score, ai_feedback):
-    buffer = io.BytesIO()
-    c = canvas.Canvas(buffer, pagesize=letter)
-    width, height = letter
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
 
-    y = height - 72
-    c.setFont("Helvetica-Bold", 16)
-    c.drawString(72, y, "Placement Readiness Analyzer Report")
-    y -= 28
+    pdf.cell(200, 10, txt="Placement Readiness Report", ln=True, align="C")
+    pdf.cell(200, 10, txt=f"Overall Score: {score}%", ln=True)
+    pdf.cell(200, 10, txt=f"ATS Match: {ats_score}%", ln=True)
+    pdf.cell(200, 10, txt="", ln=True)
 
-    c.setFont("Helvetica", 12)
-    c.drawString(72, y, f"Readiness Score: {score}%   ATS Score: {ats_score}%")
-    y -= 18
-    c.drawString(72, y, f"Matched Skills: {', '.join(matched)}")
-    y -= 16
-    c.drawString(72, y, f"Missing Skills: {', '.join(missing)}")
-    y -= 22
+    pdf.cell(200, 10, txt="Matched Skills:", ln=True)
+    pdf.multi_cell(0, 10, txt=", ".join(matched))
+    pdf.cell(200, 10, txt="Missing Skills:", ln=True)
+    pdf.multi_cell(0, 10, txt=", ".join(missing))
+    pdf.cell(200, 10, txt="", ln=True)
 
-    c.setFont("Helvetica-Bold", 13)
-    c.drawString(72, y, "Personalized Learning Timeline:")
-    y -= 16
-    c.setFont("Helvetica", 11)
+    pdf.cell(200, 10, txt="Learning Timeline:", ln=True)
+    from placement.analysis import learning_timeline
     timeline = learning_timeline(missing)
-    for week, (skill, reason) in timeline.items():
-        if y < 100:
-            c.showPage()
-            y = height - 72
-            c.setFont("Helvetica", 11)
-        c.drawString(84, y, f"{week}: {skill} - {reason}")
-        y -= 14
+    for phase, skills_list in timeline.items():
+        # Remove emojis for FPDF which only supports latin-1
+        clean_skills = skills_list.replace('✅ ', '').replace('\n', ' | ').replace('**', '')
+        clean_phase = phase.replace('⏳', 'Time:')
+        # Handle long lines in PDF
+        pdf.multi_cell(0, 8, txt=f"{clean_phase}: {clean_skills}")
 
-    if ai_feedback:
-        if y < 200:
-            c.showPage()
-            y = height - 72
-        c.setFont("Helvetica-Bold", 14)
-        c.drawString(72, y, "AI Feedback:")
-        y -= 18
-        text_obj = c.beginText(84, y)
-        text_obj.setFont("Helvetica", 11)
-        for line in (ai_feedback or "").splitlines():
-            while len(line) > 100:
-                text_obj.textLine(line[:100])
-                line = line[100:]
-            text_obj.textLine(line)
-        c.drawText(text_obj)
+    pdf.cell(200, 10, txt="", ln=True)
+    pdf.cell(200, 10, txt="AI Feedback:", ln=True)
+    # Filter encoding issues
+    clean_ai = ai_feedback.encode('latin-1', 'replace').decode('latin-1') if ai_feedback else "No feedback generated."
+    pdf.multi_cell(0, 10, txt=clean_ai)
 
-    c.save()
-    buffer.seek(0)
-    return buffer.getvalue()
+    return pdf.output(dest="S").encode('latin1')

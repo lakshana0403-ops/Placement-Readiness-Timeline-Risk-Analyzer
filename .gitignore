@@ -3,3 +3,9 @@ __pycache__/
 *.pyc
 .DS_Store
 .streamlit/secrets.toml
+
+# Local Cache
+feedback_cache.db
+
+# Virtual Environments
+placementrisk/
