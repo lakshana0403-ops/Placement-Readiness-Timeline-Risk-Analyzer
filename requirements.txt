@@ -11,4 +11,4 @@ Pillow
 google-generativeai
 google-genai
 
-reportlab
+reportlabfpdf
