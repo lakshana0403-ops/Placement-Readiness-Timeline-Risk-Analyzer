@@ -1,0 +1,230 @@
+{
+    "TECH_SKILLS": [
+        "python",
+        "java",
+        "c++",
+        "c#",
+        "javascript",
+        "typescript",
+        "ruby",
+        "php",
+        "swift",
+        "kotlin",
+        "rust",
+        "scala",
+        "dart",
+        "sql",
+        "html",
+        "css",
+        "bash",
+        "shell",
+        "react",
+        "angular",
+        "vue",
+        "svelte",
+        "next.js",
+        "bootstrap",
+        "tailwind",
+        "material ui",
+        "redux",
+        "node.js",
+        "express",
+        "django",
+        "flask",
+        "fastapi",
+        "spring boot",
+        "asp.net",
+        "ruby on rails",
+        "laravel",
+        "graphql",
+        "rest api",
+        "microservices",
+        "mysql",
+        "postgresql",
+        "sqlite",
+        "mongodb",
+        "redis",
+        "cassandra",
+        "oracle",
+        "firebase",
+        "dynamodb",
+        "elasticsearch",
+        "aws",
+        "azure",
+        "gcp",
+        "google cloud",
+        "docker",
+        "kubernetes",
+        "jenkins",
+        "github actions",
+        "terraform",
+        "ansible",
+        "linux",
+        "ci/cd",
+        "git",
+        "pandas",
+        "numpy",
+        "scikit-learn",
+        "tensorflow",
+        "pytorch",
+        "keras",
+        "matplotlib",
+        "seaborn",
+        "tableau",
+        "power bi",
+        "machine learning",
+        "deep learning",
+        "nlp",
+        "data analysis",
+        "data structures",
+        "algorithms",
+        "penetration testing",
+        "cryptography",
+        "blockchain",
+        "agile",
+        "scrum",
+        "jira"
+    ],
+    "SKILL_DB": {
+        "python": [
+            "Phase 1: Core Fundamentals",
+            "Focus on: Syntax, OOP, Data Structures, Pandas, Django/FastAPI"
+        ],
+        "java": [
+            "Phase 1: Core Fundamentals",
+            "Focus on: Spring Boot, Multithreading, JVM"
+        ],
+        "c++": [
+            "Phase 1: Core Fundamentals",
+            "Focus on: Pointers, Memory Management, STL"
+        ],
+        "c#": [
+            "Phase 1: Core Fundamentals",
+            "Focus on: .NET Core, LINQ, Entity Framework"
+        ],
+        "javascript": [
+            "Phase 1: Core Fundamentals",
+            "Focus on: ES6+, DOM manipulation, Async/Await"
+        ],
+        "typescript": [
+            "Phase 1: Core Fundamentals",
+            "Focus on: Static typing, Interfaces, Generics"
+        ],
+        "data structures": [
+            "Phase 2: Problem Solving",
+            "Focus on: Arrays, Trees, Graphs, Hash Maps"
+        ],
+        "algorithms": [
+            "Phase 2: Problem Solving",
+            "Focus on: Sorting, Searching, Dynamic Programming"
+        ],
+        "react": [
+            "Phase 4: Frontend Development",
+            "Focus on: Hooks, State management, Components"
+        ],
+        "angular": [
+            "Phase 4: Frontend Development",
+            "Focus on: Directives, Services, RxJS"
+        ],
+        "vue": [
+            "Phase 4: Frontend Development",
+            "Focus on: Vuex, Composition API, Routing"
+        ],
+        "html": [
+            "Phase 4: Frontend Development",
+            "Focus on: Semantic tags, Accessibility"
+        ],
+        "css": [
+            "Phase 4: Frontend Development",
+            "Focus on: Flexbox, Grid, Responsive Design"
+        ],
+        "tailwind": [
+            "Phase 4: Frontend Development",
+            "Focus on: Utility classes, Configuration"
+        ],
+        "node.js": [
+            "Phase 3: Backend & Integration",
+            "Focus on: Event loop, Streams, REST APIs"
+        ],
+        "express": [
+            "Phase 3: Backend & Integration",
+            "Focus on: Middleware, Routing, Authentication"
+        ],
+        "django": [
+            "Phase 3: Backend & Integration",
+            "Focus on: ORM, MTV architecture, Admin panel"
+        ],
+        "flask": [
+            "Phase 3: Backend & Integration",
+            "Focus on: Blueprints, Jinja2, Microservices"
+        ],
+        "fastapi": [
+            "Phase 3: Backend & Integration",
+            "Focus on: Pydantic, Swagger UI, Async endpoints"
+        ],
+        "spring boot": [
+            "Phase 3: Backend & Integration",
+            "Focus on: Dependency Injection, JPA, Security"
+        ],
+        "rest api": [
+            "Phase 3: Backend & Integration",
+            "Focus on: HTTP methods, Status codes, JSON"
+        ],
+        "graphql": [
+            "Phase 3: Backend & Integration",
+            "Focus on: Queries, Mutations, Resolvers"
+        ],
+        "sql": [
+            "Phase 5: Databases & Storage",
+            "Focus on: Joins, Subqueries, Normalization, Window Functions"
+        ],
+        "mysql": [
+            "Phase 5: Databases & Storage",
+            "Focus on: Relational Schemas, InnoDB, Indexing"
+        ],
+        "postgresql": [
+            "Phase 5: Databases & Storage",
+            "Focus on: Advanced JSONB, CTEs, Constraints"
+        ],
+        "mongodb": [
+            "Phase 5: Databases & Storage",
+            "Focus on: NoSQL, Documents, Aggregation Pipeline"
+        ],
+        "aws": [
+            "Phase 6: Deployment & DevOps",
+            "Focus on: EC2, S3, RDS, Lambda, IAM Roles"
+        ],
+        "docker": [
+            "Phase 6: Deployment & DevOps",
+            "Focus on: Containers, Images, Docker Compose, Dockerfile"
+        ],
+        "kubernetes": [
+            "Phase 6: Deployment & DevOps",
+            "Focus on: Pods, Deployments, Services, Helm charts"
+        ],
+        "git": [
+            "Phase 6: Deployment & DevOps",
+            "Focus on: Branching, Merging, Rebase, GitHub Actions"
+        ],
+        "pandas": [
+            "Phase 7: Advanced Topics (ML/Data)",
+            "Focus on: Dataframes, GroupBy, Data Cleaning, Merging"
+        ],
+        "numpy": [
+            "Phase 7: Advanced Topics (ML/Data)",
+            "Focus on: N-dimensional arrays, Linear Algebra functions"
+        ],
+        "scikit-learn": [
+            "Phase 7: Advanced Topics (ML/Data)",
+            "Focus on: Classification, Regression, Clustering, Pipelines"
+        ],
+        "machine learning": [
+            "Phase 7: Advanced Topics (ML/Data)",
+            "Focus on: Supervised/Unsupervised learning, Model evaluation"
+        ],
+        "deep learning": [
+            "Phase 7: Advanced Topics (ML/Data)",
+            "Focus on: Neural Nets, CNNs for images, RNNs for text"
+        ]
+    }
+}
