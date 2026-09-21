@@ -218,6 +218,15 @@ st.markdown("<p style='text-align: center; color: #94a3b8; margin-bottom: 2rem;'
 
 # --- Sidebar Configuration Panel ---
 with st.sidebar:
+    st.markdown("### ⚙️ AI Settings")
+    selected_model = st.selectbox(
+        "🧠 Select AI Model", 
+        ["gemini-3.5-flash-lite", "gemini-3.5-flash", "gemini-3.1-pro"],
+        help="Flash-Lite is fastest. Flash is balanced. Pro is for deep reasoning."
+    )
+    api_key = st.secrets.get("GOOGLE_API_KEY", "")
+    
+    st.markdown("---")
     st.markdown("### 🎯 How It Works")
     st.markdown("""
     **1. Upload Resume**  
@@ -230,25 +239,7 @@ with st.sidebar:
     Get your ATS match score, identify missing skills, and generate a customized learning timeline!
     """)
     
-    st.markdown("---")
-    st.markdown("### ⚙️ AI Settings")
     
-    # Let user select model
-    selected_model = st.selectbox(
-        "🧠 Select AI Model", 
-        ["gemini-3.5-flash-lite", "gemini-3.5-flash", "gemini-3.1-pro"],
-        help="Flash-Lite is fastest. Flash is balanced. Pro is for deep reasoning."
-    )
-    
-    # Try to get secret key, but allow user to override
-    default_key = ""
-    try:
-        default_key = st.secrets.get("GOOGLE_API_KEY", "")
-    except Exception:
-        pass
-        
-    api_key_input = st.text_input("🔑 Custom API Key", type="password", help="Paste your own API Key to bypass limits.", value=default_key)
-    api_key = api_key_input if api_key_input else default_key
         
     st.markdown("---")
     st.markdown("### 📝 About")
