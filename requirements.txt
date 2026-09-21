@@ -13,3 +13,5 @@ google-genai
 
 reportlab
 fpdf
+
+scikit-learn

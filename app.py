@@ -230,11 +230,25 @@ with st.sidebar:
     Get your ATS match score, identify missing skills, and generate a customized learning timeline!
     """)
     
-    api_key = st.secrets.get("GOOGLE_API_KEY")
-    if not api_key:
-        st.markdown("---")
-        st.markdown("### ⚙️ Settings")
-        api_key = st.text_input("🔑 Google Gemini API Key", type="password", help="Required for deep AI feedback.")
+    st.markdown("---")
+    st.markdown("### ⚙️ AI Settings")
+    
+    # Let user select model
+    selected_model = st.selectbox(
+        "🧠 Select AI Model", 
+        ["gemini-3.5-flash-lite", "gemini-3.5-flash", "gemini-3.1-pro"],
+        help="Flash-Lite is fastest. Flash is balanced. Pro is for deep reasoning."
+    )
+    
+    # Try to get secret key, but allow user to override
+    default_key = ""
+    try:
+        default_key = st.secrets.get("GOOGLE_API_KEY", "")
+    except Exception:
+        pass
+        
+    api_key_input = st.text_input("🔑 Custom API Key", type="password", help="Paste your own API Key to bypass limits.", value=default_key)
+    api_key = api_key_input if api_key_input else default_key
         
     st.markdown("---")
     st.markdown("### 📝 About")
@@ -385,7 +399,7 @@ if st.session_state.analyzed:
                         st.session_state.ai_feedback_error = None
                     else:
                         # Call API only if not in cache
-                        feedback = gemini_ai_feedback(st.session_state.resume_text, job_desc_to_use, api_key, model="gemini-3.5-flash")
+                        feedback = gemini_ai_feedback(st.session_state.resume_text, job_desc_to_use, api_key, model=selected_model)
                         st.session_state.ai_feedback = feedback
                         st.session_state.ai_feedback_error = None
                         # Save to cache for future runs

@@ -206,12 +206,42 @@ def skill_radar_chart(matched, missing):
 
 def calculate_ats_score(resume_text, job_desc):
     import re
-    # Filter out common english words and generic resume words to prevent inflated ATS scores
-    stopwords = {'i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll", "you'd", 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', "she's", 'her', 'hers', 'herself', 'it', "it's", 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', "that'll", 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', "don't", 'should', "should've", 'now', 'd', 'll', 'm', 'o', 're', 've', 'y', 'ain', 'aren', "aren't", 'couldn', "couldn't", 'didn', "didn't", 'doesn', "doesn't", 'hadn', "hadn't", 'hasn', "hasn't", 'haven', "haven't", 'isn', "isn't", 'ma', 'mightn', "mightn't", 'mustn', "mustn't", 'needn', "needn't", 'shan', "shan't", 'shouldn', "shouldn't", 'wasn', "wasn't", 'weren', "weren't", 'won', "won't", 'wouldn', "wouldn't", 'experience', 'skills', 'ability', 'required', 'preferred', 'years', 'team', 'working', 'knowledge', 'ideal', 'candidate', 'looking', 'role'}
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
     
-    jd_words = set([w for w in re.findall(r"[a-zA-Z]{3,}", job_desc.lower()) if w not in stopwords])
-    resume_words = set([w for w in re.findall(r"[a-zA-Z]{3,}", resume_text.lower()) if w not in stopwords])
+    # Text preprocessing
+    def preprocess(text):
+        text = text.lower()
+        # Remove non-alphanumeric characters
+        text = re.sub(r'[^a-z0-9\s]', '', text)
+        return text
+        
+    doc1 = preprocess(resume_text)
+    doc2 = preprocess(job_desc)
     
-    matched = jd_words.intersection(resume_words)
-    score = (len(matched) / len(jd_words)) * 100 if jd_words else 0
-    return round(score, 2), sorted(matched)
+    # If empty texts
+    if not doc1 or not doc2:
+        return 0.0, []
+        
+    # Create TF-IDF vectors
+    vectorizer = TfidfVectorizer(stop_words='english')
+    try:
+        tfidf_matrix = vectorizer.fit_transform([doc2, doc1])  # JD is index 0, Resume is index 1
+        
+        # Calculate cosine similarity
+        cosine_sim = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])
+        score = float(cosine_sim[0][0]) * 100
+        
+        # Extract matched keywords (words present in both vectors, excluding common english words)
+        feature_names = vectorizer.get_feature_names_out()
+        doc1_vector = tfidf_matrix[1].toarray()[0]
+        doc2_vector = tfidf_matrix[0].toarray()[0]
+        
+        matched_keywords = []
+        for i, feature in enumerate(feature_names):
+            if doc1_vector[i] > 0 and doc2_vector[i] > 0:
+                matched_keywords.append(feature)
+                
+        return round(score, 2), sorted(matched_keywords)
+    except Exception:
+        return 0.0, []
